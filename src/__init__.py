@@ -7,5 +7,5 @@ config = os.environ["DATABASE_URI"]
 if not config:
     raise Exception("DATABASE_URI not found")
 
-client = MongoClient(config["DATABASE_URI"])
+client = MongoClient(config)
 db = client["kyso"]
