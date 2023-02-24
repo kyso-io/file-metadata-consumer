@@ -1,0 +1,10 @@
+include:
+  - project: 'common/gitlab-ci'
+    ref: v0.4.25
+    file: '/templates/npm-dockerfile-build.yml'
+
+variables:
+  DOCKER_BUILDKIT: 1
+  # Disable SAST until someone looks at it, for now it is expensive and
+  # worthless
+  SAST_DISABLED: "true"
