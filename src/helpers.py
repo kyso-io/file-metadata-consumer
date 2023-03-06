@@ -13,6 +13,7 @@ from pandas.api.types import is_numeric_dtype
 
 
 def download_file_from_scs(kyso_file):
+    print(f"Downloading file {kyso_file}")
     sftp_host = db["KysoSettings"].find_one({
         "key": "SFTP_HOST"
     })

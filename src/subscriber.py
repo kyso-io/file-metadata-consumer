@@ -27,6 +27,8 @@ async def app():
     if nats_kyso_settings is None:
         raise Exception("KYSO_NATS_URL not found in KysoSettings collection.")
 
+    print(f"Connecting to nats {nats_kyso_settings}")
+
     nc = await nats.connect(nats_kyso_settings["value"],
                             error_cb=error_cb,
                             reconnected_cb=reconnected_cb,
