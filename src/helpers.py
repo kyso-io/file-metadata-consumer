@@ -41,10 +41,18 @@ def download_file_from_scs(kyso_file):
 
 
 def process_file_with_separated_values(kyso_file):
+    print(f'Downloading file from SFTP')
     # Download file from sfpt
     destination_file_path = download_file_from_scs(kyso_file)
+    
     # Analize file
+    print(f'Analyzing file')
     df = pd.read_csv(destination_file_path)
+
+    # Remove downloaded file
+    print(f'Deleting temporary file {destination_file_path}')
+    os.remove(destination_file_path)
+
     numeric_columns = list()
     for column_name in df.columns.values:
         if is_numeric_dtype(df[column_name]):
@@ -76,6 +84,5 @@ def process_file_with_separated_values(kyso_file):
             "columns_stats": columns_stats
         }
     })
-    # Remove downloaded file
-    os.remove(destination_file_path)
+    
     return
