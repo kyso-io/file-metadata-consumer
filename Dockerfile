@@ -19,4 +19,6 @@ USER root
 
 WORKDIR /app/src
 
+ENV PYTHONUNBUFFERED=1
+
 CMD ["python", "subscriber.py"]
