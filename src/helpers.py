@@ -32,6 +32,9 @@ def download_file_from_scs(kyso_file):
     sftp_client = ssh_client.open_sftp()
     file_extension = pathlib.Path(kyso_file["name"]).suffix
     destination_file_path = f"../data/{uuid.uuid1()}{file_extension}"
+
+    print(f'SFTP get {kyso_file["path_scs"]} to {destination_file_path}')
+
     sftp_client.get(kyso_file["path_scs"], destination_file_path)
     ssh_client.close()
     return destination_file_path
