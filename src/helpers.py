@@ -58,25 +58,37 @@ def process_file_with_separated_values(kyso_file):
         if is_numeric_dtype(df[column_name]):
             numeric_columns.append(column_name)
     columns_stats = list()
+    
     for column_name in numeric_columns:
-        column_value = {
-            "column": column_name,
-            "count": int(df[column_name].count()),
-            "maxValue": float(np.max(df[column_name])),
-            "minValue": float(np.min(df[column_name])),
-            "avgValue": float(np.mean(df[column_name])),
-            "stdDev": float(np.std(df[column_name])),
-            "medianValue": float(np.median(df[column_name])),
-            "images": list(),
-        }
-        image = BytesIO()
-        plt.hist(df[column_name], bins=int(column_value["count"] ** 0.5))
-        plt.savefig(image, format='png')
-        file_content = base64.b64encode(image.getbuffer())
-        plt.clf()
-        column_value["images"].append(str(file_content, 'utf-8'))
-        columns_stats.append(column_value)
+        try:
+            column_value = {
+                "column": column_name,
+                "count": int(df[column_name].count()),
+                "maxValue": float(np.max(df[column_name])),
+                "minValue": float(np.min(df[column_name])),
+                "avgValue": float(np.mean(df[column_name])),
+                "stdDev": float(np.std(df[column_name])),
+                "medianValue": float(np.median(df[column_name])),
+                "images": list(),
+            }
+
+            print(f'{column_value}')
+            try:
+                image = BytesIO()
+                plt.hist(df[column_name], bins=int(column_value["count"] ** 0.5))
+                plt.savefig(image, format='png')
+                file_content = base64.b64encode(image.getbuffer())
+                plt.clf()
+                column_value["images"].append(str(file_content, 'utf-8'))
+            except:
+                print(f'Error processing images')
+
+            columns_stats.append(column_value)
+        except:
+            print(f'Error processing column {column_name}')
+    
     # Update file metadata
+    print(f'Saving file {kyso_file["id"]}')
     db["File"].update_one({
         "id": kyso_file["id"],
     }, {
