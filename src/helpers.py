@@ -47,7 +47,10 @@ def process_file_with_separated_values(kyso_file):
     
     # Analize file
     print(f'Analyzing file')
-    df = pd.read_csv(destination_file_path)
+    if kyso_file["name"].endswith(".csv"):
+        df = pd.read_csv(destination_file_path)
+    elif kyso_file["name"].endswith(".tsv"):
+        df = pd.read_csv(destination_file_path, sep="\t")
 
     # Remove downloaded file
     print(f'Deleting temporary file {destination_file_path}')
