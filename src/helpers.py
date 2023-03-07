@@ -40,7 +40,10 @@ def process_file_with_separated_values(kyso_file):
     # Download file from sfpt
     destination_file_path = download_file_from_scs(kyso_file)
     # Analize file
-    df = pd.read_csv(destination_file_path)
+    if kyso_file["name"].endswith(".csv"):
+        df = pd.read_csv(destination_file_path)
+    elif kyso_file["name"].endswith(".tsv"):
+        df = pd.read_csv(destination_file_path, sep="\t")
     numeric_columns = list()
     for column_name in df.columns.values:
         if is_numeric_dtype(df[column_name]):
